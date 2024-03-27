@@ -21,6 +21,7 @@ import net.momirealms.customfishing.api.mechanic.loot.Loot;
 import org.bukkit.entity.FishHook;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
@@ -32,25 +33,26 @@ import java.util.Optional;
 /**
  * This class represents an event that occurs when a player gets a result from fishing.
  */
-public class FishingResultEvent extends PlayerEvent implements Cancellable {
+public class FishingResultEvent extends Event implements Cancellable {
 
     private static final HandlerList handlerList = new HandlerList();
     private boolean isCancelled;
     private final Result result;
     private final Loot loot;
+    private final Player player;
     private final FishHook fishHook;
     private final Map<String, String> args;
 
     /**
      * Constructs a new FishingResultEvent.
      *
-     * @param who    The player who triggered the event.
+     * @param player    The player who triggered the event.
      * @param result The result of the fishing action (SUCCESS or FAILURE).
      * @param loot   The loot received from fishing.
      * @param args   A map of placeholders and their corresponding values.
      */
-    public FishingResultEvent(@NotNull Player who, Result result, FishHook fishHook, Loot loot, Map<String, String> args) {
-        super(who);
+    public FishingResultEvent(@NotNull Player player, Result result, FishHook fishHook, Loot loot, Map<String, String> args) {
+        this.player = player;
         this.result = result;
         this.loot = loot;
         this.args = args;
@@ -125,6 +127,8 @@ public class FishingResultEvent extends PlayerEvent implements Cancellable {
     public Loot getLoot() {
         return loot;
     }
+
+    public Player getPlayer(){return player;}
 
     /**
      * Gets the amount of loot received.
